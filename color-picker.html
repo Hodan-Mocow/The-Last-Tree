@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Color Picker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .color-display {
+            width: 100%;
+            height: 200px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        label {
+            font-weight: 600;
+            color: #333;
+            font-size: 1.1em;
+            min-width: 80px;
+        }
+        
+        input[type="range"] {
+            flex: 1;
+            margin: 0 15px;
+            height: 8px;
+            border-radius: 5px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        #red-slider::-webkit-slider-track {
+            background: linear-gradient(to right, #000, #ff0000);
+        }
+        
+        #green-slider::-webkit-slider-track {
+            background: linear-gradient(to right, #000, #00ff00);
+        }
+        
+        #blue-slider::-webkit-slider-track {
+            background: linear-gradient(to right, #000, #0000ff);
+        }
+        
+        .value-display {
+            min-width: 50px;
+            text-align: right;
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+        
+        .color-code {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .random-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .random-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+        
+        .copy-btn {
+            background: #4ade80;
+            color: white;
+        }
+        
+        .copy-btn:hover {
+            background: #22c55e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+        
+        .copy-btn.copied {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Color Picker</h1>
+        <p class="subtitle">HTML Artifact Demo</p>
+        
+        <div class="color-display" id="colorDisplay"></div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <div class="control-row">
+                    <label for="red-slider">Red</label>
+                    <input type="range" id="red-slider" min="0" max="255" value="102">
+                    <span class="value-display" id="red-value">102</span>
+                </div>
+                
+                <div class="control-row">
+                    <label for="green-slider">Green</label>
+                    <input type="range" id="green-slider" min="0" max="255" value="126">
+                    <span class="value-display" id="green-value">126</span>
+                </div>
+                
+                <div class="control-row">
+                    <label for="blue-slider">Blue</label>
+                    <input type="range" id="blue-slider" min="0" max="255" value="234">
+                    <span class="value-display" id="blue-value">234</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="color-code" id="colorCode">#667eea</div>
+        
+        <div class="button-group">
+            <button class="random-btn" onclick="randomColor()">🎲 Random Color</button>
+            <button class="copy-btn" id="copyBtn" onclick="copyColor()">📋 Copy Code</button>
+        </div>
+    </div>
+    
+    <script>
+        const redSlider = document.getElementById('red-slider');
+        const greenSlider = document.getElementById('green-slider');
+        const blueSlider = document.getElementById('blue-slider');
+        const colorDisplay = document.getElementById('colorDisplay');
+        const colorCode = document.getElementById('colorCode');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        function updateColor() {
+            const r = parseInt(redSlider.value);
+            const g = parseInt(greenSlider.value);
+            const b = parseInt(blueSlider.value);
+            
+            document.getElementById('red-value').textContent = r;
+            document.getElementById('green-value').textContent = g;
+            document.getElementById('blue-value').textContent = b;
+            
+            const hex = '#' + [r, g, b].map(x => {
+                const hex = x.toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+            
+            colorDisplay.style.backgroundColor = hex;
+            colorCode.textContent = hex.toUpperCase();
+        }
+        
+        function randomColor() {
+            redSlider.value = Math.floor(Math.random() * 256);
+            greenSlider.value = Math.floor(Math.random() * 256);
+            blueSlider.value = Math.floor(Math.random() * 256);
+            updateColor();
+        }
+        
+        function copyColor() {
+            const hex = colorCode.textContent;
+            navigator.clipboard.writeText(hex).then(() => {
+                copyBtn.textContent = '✓ Copied!';
+                copyBtn.classList.add('copied');
+                setTimeout(() => {
+                    copyBtn.textContent = '📋 Copy Code';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        redSlider.addEventListener('input', updateColor);
+        greenSlider.addEventListener('input', updateColor);
+        blueSlider.addEventListener('input', updateColor);
+        
+        updateColor();
+    </script>
+</body>
+</html>

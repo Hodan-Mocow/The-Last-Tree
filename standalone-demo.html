@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIVE DEMO - Interactive Showcase</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function LiveDemo() {
+            const [counter, setCounter] = useState(0);
+            const [likes, setLikes] = useState(0);
+            const [isAnimating, setIsAnimating] = useState(true);
+            const [activeSection, setActiveSection] = useState('interactive');
+
+            useEffect(() => {
+                if (isAnimating) {
+                    const interval = setInterval(() => {
+                        setCounter(prev => prev + 1);
+                    }, 2000);
+                    return () => clearInterval(interval);
+                }
+            }, [isAnimating]);
+
+            const sections = [
+                { id: 'interactive', name: '⚡ Interactive', color: 'purple' },
+                { id: 'stats', name: '📊 Stats', color: 'blue' },
+                { id: 'animations', name: '✨ Animations', color: 'pink' },
+                { id: 'info', name: '💻 Info', color: 'green' }
+            ];
+
+            return (
+                <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-4 md:p-8">
+                    {/* Animated Background */}
+                    {isAnimating && (
+                        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                            {[...Array(20)].map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="absolute w-2 h-2 bg-white rounded-full animate-pulse"
+                                    style={{
+                                        left: `${Math.random() * 100}%`,
+                                        top: `${Math.random() * 100}%`,
+                                        animationDelay: `${Math.random() * 2}s`,
+                                        animationDuration: `${2 + Math.random() * 3}s`,
+                                        opacity: Math.random() * 0.5 + 0.2
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    )}
+
+                    <div className="max-w-6xl mx-auto relative z-10">
+                        {/* Header */}
+                        <div className="text-center mb-8">
+                            <h1 className="text-6xl md:text-8xl font-bold mb-4 animate-float">
+                                🚀 LIVE DEMO 🚀
+                            </h1>
+                            <p className="text-2xl md:text-3xl text-gray-300 mb-6">
+                                Interactive • Real-time • Beautiful
+                            </p>
+                            <div className="flex flex-wrap gap-3 justify-center">
+                                <span className="px-6 py-3 bg-green-500 rounded-full text-lg font-bold animate-pulse">
+                                    🔴 LIVE NOW
+                                </span>
+                                <span className="px-6 py-3 bg-blue-500 rounded-full text-lg font-bold">
+                                    📈 {counter} Updates
+                                </span>
+                                <span className="px-6 py-3 bg-pink-500 rounded-full text-lg font-bold">
+                                    ❤️ {likes} Likes
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Navigation */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                            {sections.map(section => (
+                                <button
+                                    key={section.id}
+                                    onClick={() => setActiveSection(section.id)}
+                                    className={`p-6 rounded-2xl font-bold text-xl transition-all transform hover:scale-105 ${
+                                        activeSection === section.id
+                                            ? 'bg-gradient-to-r from-purple-500 to-pink-500 shadow-2xl scale-105'
+                                            : 'bg-white bg-opacity-10 backdrop-blur-lg hover:bg-opacity-20'
+                                    }`}
+                                >
+                                    {section.name}
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Content */}
+                        <div className="bg-white bg-opacity-10 backdrop-blur-lg rounded-3xl p-8 shadow-2xl border border-white border-opacity-20">
+                            
+                            {/* Interactive Section */}
+                            {activeSection === 'interactive' && (
+                                <div className="space-y-8">
+                                    <h2 className="text-5xl font-bold text-center mb-8">
+                                        🎮 Interactive Controls
+                                    </h2>
+
+                                    {/* Counter */}
+                                    <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl p-12 text-center">
+                                        <h3 className="text-3xl font-bold mb-6">Auto Counter</h3>
+                                        <div className="text-9xl font-bold mb-8 animate-pulse">
+                                            {counter}
+                                        </div>
+                                        <div className="flex flex-wrap gap-4 justify-center">
+                                            <button
+                                                onClick={() => setCounter(counter - 1)}
+                                                className="px-10 py-5 bg-red-500 hover:bg-red-600 rounded-2xl font-bold text-2xl transform hover:scale-110 transition-all shadow-lg"
+                                            >
+                                                ➖ Decrease
+                                            </button>
+                                            <button
+                                                onClick={() => setCounter(0)}
+                                                className="px-10 py-5 bg-gray-700 hover:bg-gray-800 rounded-2xl font-bold text-2xl transform hover:scale-110 transition-all shadow-lg"
+                                            >
+                                                🔄 Reset
+                                            </button>
+                                            <button
+                                                onClick={() => setCounter(counter + 1)}
+                                                className="px-10 py-5 bg-green-500 hover:bg-green-600 rounded-2xl font-bold text-2xl transform hover:scale-110 transition-all shadow-lg"
+                                            >
+                                                ➕ Increase
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* Like Button */}
+                                    <div className="bg-gradient-to-br from-pink-600 to-rose-600 rounded-3xl p-12 text-center">
+                                        <h3 className="text-3xl font-bold mb-6">Like Counter</h3>
+                                        <button
+                                            onClick={() => setLikes(likes + 1)}
+                                            className="inline-flex items-center gap-4 px-16 py-8 bg-white text-pink-600 hover:bg-pink-100 rounded-full font-bold text-3xl transform hover:scale-110 transition-all shadow-2xl"
+                                        >
+                                            ❤️ Click Me! ({likes})
+                                        </button>
+                                    </div>
+
+                                    {/* Animation Toggle */}
+                                    <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-3xl p-12 text-center">
+                                        <h3 className="text-3xl font-bold mb-6">Animation Control</h3>
+                                        <button
+                                            onClick={() => setIsAnimating(!isAnimating)}
+                                            className="px-16 py-8 bg-white text-blue-600 hover:bg-blue-100 rounded-full font-bold text-3xl transform hover:scale-110 transition-all shadow-2xl"
+                                        >
+                                            {isAnimating ? '⏸️ Pause' : '▶️ Play'} Particles
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Stats Section */}
+                            {activeSection === 'stats' && (
+                                <div className="space-y-8">
+                                    <h2 className="text-5xl font-bold text-center mb-8">
+                                        📊 Live Statistics
+                                    </h2>
+                                    
+                                    <div className="grid md:grid-cols-3 gap-6">
+                                        <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl p-8 text-center">
+                                            <div className="text-7xl font-bold mb-4">{counter}</div>
+                                            <div className="text-2xl">Total Updates</div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-pink-600 to-rose-600 rounded-3xl p-8 text-center">
+                                            <div className="text-7xl font-bold mb-4">{likes}</div>
+                                            <div className="text-2xl">Total Likes</div>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-3xl p-8 text-center">
+                                            <div className="text-7xl font-bold mb-4">{counter + likes}</div>
+                                            <div className="text-2xl">Combined</div>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-3xl p-8">
+                                        <h3 className="text-3xl font-bold mb-4">Live State</h3>
+                                        <pre className="bg-black bg-opacity-30 p-6 rounded-2xl text-xl font-mono overflow-x-auto">
+{`{
+  "counter": ${counter},
+  "likes": ${likes},
+  "isAnimating": ${isAnimating},
+  "activeSection": "${activeSection}",
+  "timestamp": "${new Date().toLocaleTimeString()}"
+}`}
+                                        </pre>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Animations Section */}
+                            {activeSection === 'animations' && (
+                                <div className="space-y-8">
+                                    <h2 className="text-5xl font-bold text-center mb-8">
+                                        ✨ CSS Animations
+                                    </h2>
+                                    
+                                    <div className="grid md:grid-cols-3 gap-6">
+                                        <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl p-8 transform hover:scale-110 hover:rotate-3 transition-all animate-pulse">
+                                            <div className="text-6xl mb-4">💫</div>
+                                            <h3 className="text-2xl font-bold">Pulse</h3>
+                                            <p className="text-lg">Breathing effect</p>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-3xl p-8 transform hover:scale-110 hover:-rotate-3 transition-all animate-bounce">
+                                            <div className="text-6xl mb-4">⚡</div>
+                                            <h3 className="text-2xl font-bold">Bounce</h3>
+                                            <p className="text-lg">Spring effect</p>
+                                        </div>
+                                        <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-3xl p-8 transform hover:scale-110 transition-all animate-float">
+                                            <div className="text-6xl mb-4">🚀</div>
+                                            <h3 className="text-2xl font-bold">Float</h3>
+                                            <p className="text-lg">Floating motion</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Info Section */}
+                            {activeSection === 'info' && (
+                                <div className="space-y-8">
+                                    <h2 className="text-5xl font-bold text-center mb-8">
+                                        💻 Tech Stack
+                                    </h2>
+                                    
+                                    <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-3xl p-8">
+                                        <h3 className="text-3xl font-bold mb-6">Features Included:</h3>
+                                        <ul className="space-y-4 text-xl">
+                                            <li className="flex items-center gap-3">
+                                                <span className="text-3xl">✅</span>
+                                                <span>React 18 (Hooks: useState, useEffect)</span>
+                                            </li>
+                                            <li className="flex items-center gap-3">
+                                                <span className="text-3xl">✅</span>
+                                                <span>Tailwind CSS for styling</span>
+                                            </li>
+                                            <li className="flex items-center gap-3">
+                                                <span className="text-3xl">✅</span>
+                                                <span>Real-time state updates</span>
+                                            </li>
+                                            <li className="flex items-center gap-3">
+                                                <span className="text-3xl">✅</span>
+                                                <span>CSS animations & transitions</span>
+                                            </li>
+                                            <li className="flex items-center gap-3">
+                                                <span className="text-3xl">✅</span>
+                                                <span>Responsive design</span>
+                                            </li>
+                                            <li className="flex items-center gap-3">
+                                                <span className="text-3xl">✅</span>
+                                                <span>Interactive controls</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div className="bg-gradient-to-br from-blue-600 to-cyan-600 rounded-3xl p-8 text-center">
+                                        <h3 className="text-3xl font-bold mb-4">Ready to Deploy!</h3>
+                                        <p className="text-xl mb-4">
+                                            This HTML file works standalone - just open it in any browser!
+                                        </p>
+                                        <p className="text-lg opacity-80">
+                                            Or upload to Vercel, Netlify, or GitHub Pages for instant hosting
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Footer */}
+                        <div className="mt-8 text-center">
+                            <div className="inline-flex gap-8 bg-white bg-opacity-10 backdrop-blur-lg rounded-full px-12 py-6">
+                                <div>
+                                    <div className="text-4xl font-bold text-yellow-400">{counter}</div>
+                                    <div className="text-sm text-gray-300">Updates</div>
+                                </div>
+                                <div>
+                                    <div className="text-4xl font-bold text-pink-400">{likes}</div>
+                                    <div className="text-sm text-gray-300">Likes</div>
+                                </div>
+                                <div>
+                                    <div className="text-4xl font-bold text-green-400">LIVE</div>
+                                    <div className="text-sm text-gray-300">Status</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<LiveDemo />, document.getElementById('root'));
+    </script>
+</body>
+</html>

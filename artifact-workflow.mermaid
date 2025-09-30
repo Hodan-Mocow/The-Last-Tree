@@ -1,0 +1,46 @@
+graph TD
+    A[User Requests Content] --> B{What Type?}
+    
+    B -->|Interactive UI| C[Create React Artifact]
+    B -->|Web Page| D[Create HTML Artifact]
+    B -->|Document| E[Create Markdown Artifact]
+    B -->|Diagram| F[Create Mermaid Artifact]
+    B -->|Graphics| G[Create SVG Artifact]
+    
+    C --> H[Add useState Hooks]
+    C --> I[Style with Tailwind]
+    H --> J[Render Live in Browser]
+    I --> J
+    
+    D --> K[Embed CSS & JS]
+    K --> J
+    
+    E --> L[Format with Markdown]
+    L --> J
+    
+    F --> M[Define Diagram Structure]
+    M --> J
+    
+    G --> N[Create Vector Graphics]
+    G --> O[Add Animations]
+    N --> J
+    O --> J
+    
+    J --> P{User Satisfied?}
+    P -->|No| Q[Request Modifications]
+    P -->|Yes| R[Use or Share Artifact]
+    
+    Q --> S[Claude Updates Artifact]
+    S --> J
+    
+    R --> T[Download or Copy]
+    R --> U[Continue Building]
+    
+    style A fill:#e0e7ff
+    style J fill:#86efac
+    style R fill:#fde047
+    style C fill:#fca5a5
+    style D fill:#fdba74
+    style E fill:#a5b4fc
+    style F fill:#c4b5fd
+    style G fill:#f9a8d4
